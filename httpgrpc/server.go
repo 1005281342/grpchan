@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"path"
 	"strconv"
@@ -118,6 +119,7 @@ func HandleServices(mux Mux, basePath string, reg grpchan.HandlerMap, unaryInt g
 		for i := range desc.Methods {
 			md := desc.Methods[i]
 			h := handleMethod(svr, desc.ServiceName, &md, unaryInt, &hOpts)
+			log.Printf("path: %s\n", path.Join(basePath, fmt.Sprintf("%s/%s", desc.ServiceName, md.MethodName)))
 			mux(path.Join(basePath, fmt.Sprintf("%s/%s", desc.ServiceName, md.MethodName)), h)
 		}
 		for i := range desc.Streams {
